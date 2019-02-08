@@ -9,12 +9,19 @@ const express = require('express'),
     auth = require('./routers/auth'),
 
         //middleware imports
-    passport = require('passport');
+    passport = require('passport'),
+    bodyParser = require('body-parser'),
+    exphbs  = require('express-handlebars');
 
 /*====================== Mongoose connections ========================*/
 
 /*====================== Activate middleware ========================*/
-
+app.use(express.static('public'));
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 /*====================== Global variables ========================*/
 
 //Passport Config
