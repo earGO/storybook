@@ -25,6 +25,11 @@ app.get('/',(req,res)=>{
     res.send('Server up and running for Storybook')
 })
 
+//verify domain
+app.get('/verify',(req,res)=>{
+    res.redirect('./config/googlebc0d0191d7bb8bf0.html')
+})
+
 app.use('/auth',auth)
 
 app.get('/dashboard',(req,res)=>{
