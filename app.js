@@ -22,7 +22,7 @@ require('./config/passport')(passport)
 
 /*====================== Go routing!!!! ========================*/
 app.get('/',(req,res)=>{
-    res.send('Server up and running for Storybook')
+    res.render('index')
 })
 
 //verify domain
