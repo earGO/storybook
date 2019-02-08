@@ -7,6 +7,7 @@ const express = require('express'),
 
         //routers
     auth = require('./routers/auth'),
+    policy = require('./routers/policy'),
 
         //middleware imports
     passport = require('passport'),
@@ -27,7 +28,6 @@ app.use(bodyParser.json());
 /*====================== Global variables ========================*/
 
 //Passport Config
-require('./config/passport')(passport)
 
 /*====================== Go routing!!!! ========================*/
 app.get('/',(req,res)=>{
@@ -40,6 +40,8 @@ app.get('/verify',(req,res)=>{
 })
 
 app.use('/auth',auth)
+
+app.use('/policy',policy)
 
 app.get('/dashboard',(req,res)=>{
     res.send('dashboard gonna be here')
