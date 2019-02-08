@@ -1,12 +1,15 @@
 const express = require('express'),
     router = express.Router();
 
-router.get('/google',(req,res)=>{
-    res.send('got adress working')
+router.get('/auth/facebook',
+    passport.authenticate('facebook'));
 })
 
-router.get('/google/callback',(req,res)=>{
-    res.send('got adress working')
-})
+router.get('/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
 
 module.exports = router
