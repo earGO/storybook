@@ -60,3 +60,7 @@ typings/
 
 #keys-files
 /keys
+
+# env variables
+.env
+.env*

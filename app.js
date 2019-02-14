@@ -12,9 +12,23 @@ const express = require('express'),
         //middleware imports
     passport = require('passport'),
     bodyParser = require('body-parser'),
-    exphbs  = require('express-handlebars');
+    exphbs  = require('express-handlebars'),
+    cookieParser = require('cookie-parser'),
+    session = require('express-session');
+
+/*====================== Load environment variables ========================*/
+
+require('custom-env').env('staging')
+
+const mongoDB = process.env.MONGODB_URI;
 
 /*====================== Mongoose connections ========================*/
+//Map global promises to get rid of warning
+mongoose.Promise = global.Promise;
+//connect to mongoose
+mongoose.connect(mongoDB,{ useNewUrlParser:true })
+    .then(()=> console.log('MongoDB connected!'))
+    .catch(err => console.log('error connecting to MongoDB\n',err));
 
 /*====================== Activate middleware ========================*/
 app.use(express.static('public'));
@@ -23,25 +37,43 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+app.use(cookieParser()); //initialize cookie parser JIC
+
+//initialize express-session
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true
+}));
 
 
 /*====================== Global variables ========================*/
+app.use((req,res,next)=>{
+    res.locals.user = req.user || null;
+    next();
+})
 
-//Passport Config
+/*====================== Passport config ========================*/
+//load all models for passport
+require('./models/User');
+//initialize passport
+require('./config/passport')(passport)
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 /*====================== Go routing!!!! ========================*/
 app.get('/',(req,res)=>{
     res.render('index')
 })
 
-//verify domain
-app.get('/verify',(req,res)=>{
-    res.redirect('./config/googlebc0d0191d7bb8bf0.html')
-})
-
 app.use('/auth',auth)
 
 app.use('/policy',policy)
+
+app.get('/login',(req,res)=>{
+    res.send('login page gonna be here')
+})
 
 app.get('/dashboard',(req,res)=>{
     res.send('dashboard gonna be here')
