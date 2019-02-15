@@ -1,19 +1,19 @@
 const mongoose = require('mongoose'),
 
     UserSchema = new mongoose.Schema({
-        facebookID:{
-            type:String,
-            required:true
-        },
-        firstName:String,
+        name:String,
         email:{
             type:String,
             required:true
         },
+        password:{
+            type:String,
+            required:true
+        },
         lastName:String,
-        image:String
+        image:String,
 
     })
 
-mongoose.model('users',UserSchema)
+mongoose.model('users-local',UserSchema)
 

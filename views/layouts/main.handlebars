@@ -37,7 +37,8 @@
 {{> _header }}
 <main>
     <div class="container">
-
+        {{>_msg}}
+        {{>_errors}}
         {{{body}}}
 
     </div>
@@ -55,6 +56,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <!--Local custom JS just in case-->
 <script rel="script" src="script/main.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.sidenav').sidenav();
+    });
+</script>
 </body>
 </html>
 

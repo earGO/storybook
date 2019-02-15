@@ -1,14 +1,9 @@
 const
     FacebookStrategy = require('passport-facebook').Strategy,
-    bcrypt = require('bcryptjs'),
-    mongoose = require('mongoose')
+    mongoose = require('mongoose'),
     User = mongoose.model('users');
 
 module.exports = function(passport) {
-
-    //written FACEBOOK passport strategy - couldn't figure out the user-object issue
-    //user ibject doesn't pass to global variable and couldn't be used through an app
-
     passport.use(
         new FacebookStrategy({
             clientID: process.env.CLIENT_ID,
@@ -21,11 +16,12 @@ module.exports = function(passport) {
             let givenName = '',
                 familyName='',
                 facebookEmail=''
+
             if (profile.name.givenName){
                 givenName=profile.name.givenName
                 console.log('using facebook profile given name')
             } else {
-                givenName = profile.displayName.split(' ')[0]
+                givenName = profile.displayName.split(' ')[0];
                 console.log('using splitted display name')
             }
             (profile.name.familyName)
@@ -34,7 +30,8 @@ module.exports = function(passport) {
 
             (profile.email)
                 ?facebookEmail=profile.email
-                :facebookEmail='no email listed'
+                :facebookEmail='no email listed';
+
             const newUser={
                 facebookID:profile.id,
                 firstName:givenName,
@@ -42,26 +39,24 @@ module.exports = function(passport) {
                 email:facebookEmail,
                 image:profile._json.picture.data.url
             }
-            console.log(newUser)
+            console.log('created newUser from request\n',newUser)
             //check for existing user, and if not - create one
             User.findOne({
-                facebookID: profile.id
-            },
-                (err,user)=>{
-                if(err){
-                    console.log('user not found, creating one')
-                    User.insertOne(newUser,(err,user)=>{
-                            if(err){
-                                console.log('error creating user\n',err)
-                            } else{
-                                return cb(err,user)
-                            }
-                    })
-                }else {
-                    return cb(err,user)
+                facebookID: newUser.facebookID
+            }).then(user=>{
+                if(user){
+                    //return the result of authentucation
+                    return cb(null,user)
+                } else {
+                    //create new User
+                    new User(newUser)
+                        .save()
+                        .then(user => { return cb(null,user)})
+                        .catch(err=>console.log('error creating user\n',cb(err)))
+
                 }
-                })
-            }));
+            })
+        }));
 
     passport.serializeUser((user,cb)=>{
         cb(null,user.id)
