@@ -57,3 +57,10 @@ typings/
 
 # next.js build output
 .next
+
+#keys-files
+/keys
+
+# env variables
+.env
+.env*

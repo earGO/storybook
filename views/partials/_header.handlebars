@@ -1,0 +1,52 @@
+<nav class="grey darken-3">
+    <div class="container">
+        <div class="nav-wrapper">
+            <a href="/stories" class="brand-logo center">StoryBooks</a>
+            <ul class="left hide-on-small">
+                <li><a href="#" data-target="slide-out" class="button-collapse show-on-large sidenav-trigger"><i class="fa fa-bars"></i></a></li>
+            </ul>
+            <!--right nav-->
+            <ul class="right hide-on-med-and-down">
+                {{#if user}}
+                    <li><a href="/dashboard">Welcome, {{user.firstName}}</a></li>
+                    <li><a href="/auth/logout"><i class="fa fa-sign-out">Logout</i></a></li>
+                {{else}}
+                    <li><a href="/stories"><i class="fa fa-book"></i>Public Stories</a></li>
+                    {{/if}}
+            </ul>
+
+
+            <!--&lt;!&ndash;nav for local passport&ndash;&gt;
+            <ul class="right hide-on-small">
+               <li><a href="/users/login">Login</a></li>
+                <li><a href="/users/register">Register</a></li>
+            </ul>-->
+        </div>
+    </div>
+</nav>
+
+<!--side menu-->
+<ul id="slide-out" class="sidenav">
+
+        {{#if user}}
+        <li>
+        {{else}}
+            <a href="/auth/facebook" class="btn indigo darken-4"><i class="fa fa-facebook left"></i>Login with Facebook</a>
+        </li>
+        {{/if}}
+        <li>
+            <a href="/stories"><i class="fa fa-book"></i>Public Stories</a>
+        </li>
+    <li class="divider"></li>
+    {{#if user}}
+    <li>
+        <a href="/Dashboard"><i class="fa fa-cog"></i>Dashboard</a>
+    </li>
+    <li>
+        <a href="/stories/my"><i class="fa fa-user"></i>My stories</a>
+    </li>
+    <li>
+        <a href="/auth/logout"><i class="fa fa-sign-out"></i>Logout</a>
+    </li>
+    {{/if}}
+</ul>
