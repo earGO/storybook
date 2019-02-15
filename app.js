@@ -20,8 +20,9 @@ const express = require('express'),
     flash = require('connect-flash');
 
 /*====================== Load environment variables ========================*/
+    require('custom-env').env('staging')
 
-require('custom-env').env('staging')
+
 
 const mongoDB = process.env.MONGODB_URI;
 
