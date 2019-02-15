@@ -9,6 +9,7 @@ const express = require('express'),
     users = require('./routers/users'),
     policy = require('./routers/policy'),
     index = require('./routers/index'),
+    auth = require('./routers/auth'),
 
         //middleware imports
     passport = require('passport'),
@@ -54,19 +55,23 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-require('./config/passport')(passport)
+require('./config/passport-facebook')(passport)
 
 /*====================== Global variables ========================*/
 app.use((req,res,next)=>{
     res.locals.user = req.user || null;
-    console.log('i see user in global scale as 0.',res.locals.user)
     next();
 })
 
 /*====================== Go routing!!!! ========================*/
 app.use('/',index)
 
+/*
+//routs for local authorisation and registration
 app.use('/users',users)
+*/
+
+app.use('/auth',auth)
 
 app.use('/policy',policy)
 

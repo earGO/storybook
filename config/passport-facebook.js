@@ -1,5 +1,5 @@
 const
-    LocalStrategy = require('passport-local').Strategy,
+    FacebookStrategy = require('passport-facebook').Strategy,
     bcrypt = require('bcryptjs'),
     mongoose = require('mongoose')
     User = mongoose.model('users');
