@@ -6,8 +6,9 @@ const express = require('express'),
     port = process.env.PORT || 5000,
 
         //routers
-    auth = require('./routers/auth'),
+    users = require('./routers/users'),
     policy = require('./routers/policy'),
+    index = require('./routers/index'),
 
         //middleware imports
     passport = require('passport'),
@@ -42,16 +43,20 @@ app.use(cookieParser()); //initialize cookie parser JIC
 //initialize express-session
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
+    resave: true,
     saveUninitialized: true
 }));
-
 
 /*====================== Global variables ========================*/
 app.use((req,res,next)=>{
     res.locals.user = req.user || null;
+    console.log('global user seen as',req.user)
     next();
 })
+
+
+
+
 
 /*====================== Passport config ========================*/
 //load all models for passport
@@ -63,11 +68,9 @@ app.use(passport.session())
 
 
 /*====================== Go routing!!!! ========================*/
-app.get('/',(req,res)=>{
-    res.render('index')
-})
+app.use('/',index)
 
-app.use('/auth',auth)
+app.use('/users',users)
 
 app.use('/policy',policy)
 
@@ -75,9 +78,6 @@ app.get('/login',(req,res)=>{
     res.send('login page gonna be here')
 })
 
-app.get('/dashboard',(req,res)=>{
-    res.send('dashboard gonna be here')
-})
 
 /*====================== Start an application ========================*/
 app.listen(port,()=>{

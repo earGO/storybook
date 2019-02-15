@@ -1,8 +1,39 @@
 const FacebookStrategy = require('passport-facebook').Strategy,
+    LocalStrategy = require('passport-local').Strategy,
     mongoose = require('mongoose')
     User = mongoose.model('users');
 
 module.exports = function(passport) {
+    //Using local strategy for simplier issues
+    passport.use(
+        new LocalStrategy({
+                usernameFIeld:'email',
+                passwordField: 'password',
+            },
+            function(email,password,done){
+                User.findOne({
+                    email:email
+                }),(err,user)=>{
+                    if(err){
+                        console.log('error finding user\n',err);
+                        return done(err);
+                    }
+                    if(!user) {
+                        return done(null,false,{message:'No user found'});
+                    } else {
+                        //check do passwords match or not
+
+                    }
+                }
+
+
+            }
+        )
+    )
+
+    /*//written FACEBOOK passport strategy - couldn't figure out the user-object issue
+    //user ibject doesn't pass to global variable and couldn't be used through an app
+
     passport.use(
         new FacebookStrategy({
             clientID: process.env.CLIENT_ID,
@@ -12,7 +43,6 @@ module.exports = function(passport) {
                 enableProof: true
         },
         function(accessToken, refreshToken, profile, cb) {
-            console.log(profile)
             let givenName = '',
                 familyName='',
                 facebookEmail=''
@@ -41,18 +71,20 @@ module.exports = function(passport) {
             //check for existing user, and if not - create one
             User.findOne({
                 facebookID: profile.id
-            }).then(user=>{
-                if(user){
-                    //return the result of authentucation
-                    return cb(null,user)
-                } else {
-                    //create new User
-                    new User(newUser)
-                        .save()
-                        .then(user => { return cb(null,user)})
-                        .catch(err=>console.log('error creating user\n',cb(err)))
-
-                    }
+            },
+                (err,user)=>{
+                if(err){
+                    console.log('user not found, creating one')
+                    User.insertOne(newUser,(err,user)=>{
+                            if(err){
+                                console.log('error creating user\n',err)
+                            } else{
+                                return cb(err,user)
+                            }
+                    })
+                }else {
+                    return cb(err,user)
+                }
                 })
             }));
 
@@ -62,5 +94,5 @@ module.exports = function(passport) {
 
     passport.deserializeUser((id,cb)=>{
         User.findById(id).then(user=> cb(null,user))
-    })
+    })*/
         }
