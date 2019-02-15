@@ -5,51 +5,8 @@ const
     User = mongoose.model('users');
 
 module.exports = function(passport) {
-    //Using local strategy for simplier issues
-    passport.use(
-        new LocalStrategy({
-                usernameField:'email',
-                passwordField: 'password',
-            },
-            function(email,password,done){
-                User.findOne({
-                    email:email
-                },(err,user)=>{
-                    if(err){
-                        console.log('error finding user\n',err);
-                        return done(err);
-                    }
-                    if(!user) {
-                        return done(null,false,{message:'No user found'});
-                    } else {
-                        bcrypt.compare(password,user.password
-                            ,(err,isMatch)=>{
-                                if(err){
-                                    console.log('error comparing passwords\n',err)
-                                }
-                                if(isMatch){
-                                    console.log('found user, password is right')
-                                    console.log(user)
-                                    return done(null,user)
-                                }else{
-                                    return done(null, false, {message:'Wrong password'})
-                                }
 
-                    })
-                }
-            }
-        )}
-    ))
-
-    passport.serializeUser(function(user, done) {
-        done(null, user);
-    });
-
-    passport.deserializeUser(function(user, done) {
-        done(null, user);
-    });
-
-    /*//written FACEBOOK passport strategy - couldn't figure out the user-object issue
+    //written FACEBOOK passport strategy - couldn't figure out the user-object issue
     //user ibject doesn't pass to global variable and couldn't be used through an app
 
     passport.use(
@@ -112,5 +69,5 @@ module.exports = function(passport) {
 
     passport.deserializeUser((id,cb)=>{
         User.findById(id).then(user=> cb(null,user))
-    })*/
+    })
         }

@@ -3,7 +3,7 @@
 const express = require('express'),
     mongoose = require('mongoose'),
     app = express(),
-    port = process.env.PORT || 5000,
+    port = process.env.PORT || 5010,
 
         //routers
     users = require('./routers/users'),
@@ -15,7 +15,8 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     exphbs  = require('express-handlebars'),
     cookieParser = require('cookie-parser'),
-    session = require('express-session');
+    session = require('express-session'),
+    flash = require('connect-flash');
 
 /*====================== Load environment variables ========================*/
 
@@ -38,6 +39,7 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+app.use(flash());
 app.use(cookieParser()); //initialize cookie parser JIC
 
 //initialize express-session
@@ -47,25 +49,19 @@ app.use(session({
     saveUninitialized: true
 }));
 
-/*====================== Global variables ========================*/
-app.use((req,res,next)=>{
-    res.locals.user = req.user || null;
-    console.log('global user seen as',req.user)
-    next();
-})
-
-
-
-
-
 /*====================== Passport config ========================*/
-//load all models for passport
-require('./models/User');
 //initialize passport
-require('./config/passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
+require('./config/passport')(passport)
+
+/*====================== Global variables ========================*/
+app.use((req,res,next)=>{
+    res.locals.user = req.user || null;
+    console.log('i see user in global scale as 0.',res.locals.user)
+    next();
+})
 
 /*====================== Go routing!!!! ========================*/
 app.use('/',index)

@@ -1,11 +1,15 @@
 const express = require('express'),
     router = express.Router(),
-    passport = require('passport');
+    passport = require('passport'),
+    auth = require('../controllers/auth'),
+    register = require('../controllers/register');
 
-router.get('/facebook',(req,res,next)=>{
-        passport.authenticate('facebook')(req,res,next)
-}
-    );
+router.get('/login',auth.show);
 
+router.get('/register',register.show);
+
+router.post('/login',auth.authenticate)
+
+router.post('/register',register.register)
 
 module.exports = router
