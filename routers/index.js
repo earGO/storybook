@@ -1,12 +1,17 @@
 const express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    {ensureAuthenticated,ensureGuest} = require('../controllers/auth');
 
-router.get('/',(req,res)=>{
+router.get('/',ensureGuest,(req,res)=>{
     res.render('index/welcome')
 })
 
-router.get('/dashboard',(req,res)=>{
-    res.send('dashboard gonna be here')
+router.get('/dashboard',ensureAuthenticated,(req,res)=>{
+    res.render('index/dashboard')
+})
+
+router.get('/about',(req,res)=>{
+    res.render('index/about')
 })
 
 module.exports = router;

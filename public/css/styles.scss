@@ -3,9 +3,32 @@ $background-color:white;
 body {
   padding: 0;
   margin: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer{
+  margin-top:26px;
 }
 
 .page-footer{
   background-color: $background-color;
-  color:black;
+
+}
+
+.nav-wrapper .fa-bars{
+  font-size: 28px;
+}
+
+.sidenav{
+  padding-top:20px;
+  padding-left:26px;
+}
+.sidebarred{
+  padding-left:26px;
 }

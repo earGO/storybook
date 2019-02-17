@@ -10,6 +10,7 @@ const express = require('express'),
     policy = require('./routers/policy'),
     index = require('./routers/index'),
     auth = require('./routers/auth'),
+    stories = require('./routers/stories'),
 
         //middleware imports
     passport = require('passport'),
@@ -21,8 +22,6 @@ const express = require('express'),
 
 /*====================== Load environment variables ========================*/
     require('custom-env').env('staging')
-
-
 
 const mongoDB = process.env.MONGODB_URI;
 
@@ -80,6 +79,8 @@ app.use('/users',users)
 */
 
 app.use('/auth',auth)
+
+app.use('/stories',stories)
 
 app.use('/policy',policy)
 

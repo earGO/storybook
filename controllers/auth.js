@@ -34,14 +34,23 @@ const ensureAuthenticated = function (req, res, next) {
     if(req.isAuthenticated()){
         return next();
     } else {
-        req.flash('error_msg','not authorized');
-        res.redirect('/users/login')
+        req.flash('error_msg','Not authorized, login please');
+        res.redirect('/')
     }
-}
+},
+    ensureGuest = function (req, res, next) {
+        if(req.isAuthenticated()){
+            res.redirect('/dashboard')
+
+        } else {
+            return next();
+        }
+    }
 
 module.exports = {
     show,
     authenticate,
     logout,
-    ensureAuthenticated
+    ensureAuthenticated,
+    ensureGuest
 }

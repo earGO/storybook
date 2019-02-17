@@ -1,7 +1,7 @@
 <nav class="grey darken-3">
     <div class="container">
         <div class="nav-wrapper">
-            <a href="/stories" class="brand-logo center">StoryBooks</a>
+            <a href="/" class="brand-logo center">StoryBooks</a>
             <ul class="left hide-on-small">
                 <li><a href="#" data-target="slide-out" class="button-collapse show-on-large sidenav-trigger"><i class="fa fa-bars"></i></a></li>
             </ul>
@@ -29,9 +29,9 @@
 <ul id="slide-out" class="sidenav">
 
         {{#if user}}
-        <li>
+        <li class="">
         {{else}}
-            <a href="/auth/facebook" class="btn indigo darken-4"><i class="fa fa-facebook left"></i>Login with Facebook</a>
+            <a href="/auth/facebook" class="btn indigo darken-4 sidebarred"><i class="fa fa-facebook left"></i>Login with Facebook</a>
         </li>
         {{/if}}
         <li>

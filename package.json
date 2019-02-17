@@ -4,7 +4,8 @@
   "description": "a little more serious MongoDB solidify app",
   "main": "app.js",
   "scripts": {
-    "start": "node -r dotenv/config app.js"
+    "golocal": "node -r dotenv/config app.js",
+    "start": "node app.js"
   },
   "author": "earGO",
   "license": "ISC",
