@@ -1,14 +1,15 @@
 const
     FacebookStrategy = require('passport-facebook').Strategy,
     mongoose = require('mongoose'),
-    User = mongoose.model('users');
+    User = mongoose.model('users'),
+    keys = require('./keys');
 
 module.exports = function(passport) {
     passport.use(
         new FacebookStrategy({
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: process.env.CALLBACK_URL,
+            clientID: keys.CLIENT_ID,
+            clientSecret: keys.CLIENT_SECRET,
+            callbackURL: keys.CALLBACK_URL,
             profileFields: ['id', 'picture.type(large)', 'name','email','displayName'],
                 enableProof: true
         },

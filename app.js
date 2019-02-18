@@ -5,6 +5,9 @@ const express = require('express'),
     app = express(),
     port = process.env.PORT || 5010,
 
+        //keys
+    keys = require('./config/keys')
+
         //routers
     users = require('./routers/users'),
     policy = require('./routers/policy'),
@@ -22,12 +25,12 @@ const express = require('express'),
     methodOverride = require('method-override'),
 
     //helpers
-    {truncate,stripTags,formatDate,select} = require('./helpers/hbs');
+    {truncate,stripTags,formatDate,select,editIcon} = require('./helpers/hbs');
 
 /*====================== Load environment variables ========================*/
     require('custom-env').env('staging')
 
-const mongoDB = process.env.MONGODB_URI;
+const mongoDB = keys.MONGODB_URI;
 
 /*====================== Mongoose connections ========================*/
 //Map global promises to get rid of warning
@@ -48,7 +51,8 @@ app.engine('handlebars', exphbs({
         truncate: truncate,
         stripTags: stripTags,
         formatDate: formatDate,
-        select: select
+        select: select,
+        editIcon:editIcon
     },
     defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');

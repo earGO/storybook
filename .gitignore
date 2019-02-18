@@ -59,7 +59,7 @@ typings/
 .next
 
 #keys-files
-/keys
+keys_dev.js
 
 # env variables
 .env

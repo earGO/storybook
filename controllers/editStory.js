@@ -8,10 +8,15 @@ const Story = mongoose.model('stories');
 //contorollers functions
 const
     edit = function (req, res) {
-        Story.findOne({_id:req.params.id})
-            .populate('user')
+        Story.findOne({
+            _id:req.params.id
+        })
             .then(story =>{
-                res.render('stories/edit',{story:story})
+                if(story.user != req.user.id){
+                    res.redirect('/stories')
+                }else {
+                    res.render('stories/edit',{story:story})
+                }
             })
 },
     saveEdited = function(req,res){

@@ -3,9 +3,12 @@
         <div class="col s12 s12 m6 l6 xl4">
             <div class="card index-card">
                 <div>
-                    <a href="/stories/{{_id}}/edit" class="btn-floating halfway-fab">
-                        <i class="fa fa-pencil"></i>
-                    </a>
+                    {{#if user}}
+                        <!--'cause we're inside "each" loop for stories, 'user' will refere to story.user
+                    so to get to global user we use ../user
+                    and lone id here refers to the story.id-->
+                        {{{editIcon user.id ../user.id id}}}
+                    {{/if}}
                 </div>
                 <div class="card-content center-align">
                     <h5>{{title}}</h5>
@@ -13,7 +16,7 @@
                     <br>
                     <div class="chip">
                         <img src="{{user.image}}" alt="Story author">
-                        {{user.firstName}} {{user.lastName}}
+                        <a href="/stories/user/{{user.id}}">{{user.firstName}} {{user.lastName}}</a>
                     </div>
                 </div>
 
