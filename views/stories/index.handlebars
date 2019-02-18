@@ -1,1 +1,29 @@
-<h1>Show all stories </h1>
+<div class="row">
+    {{#each stories}}
+        <div class="col s12 s12 m6 l6 xl4">
+            <div class="card index-card">
+                <div>
+                    <a href="/stories/{{_id}}/edit" class="btn-floating halfway-fab">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                </div>
+                <div class="card-content center-align">
+                    <h5>{{title}}</h5>
+                    <p class="story-text">{{truncate (stripTags body) 150}}</p>
+                    <br>
+                    <div class="chip">
+                        <img src="{{user.image}}" alt="Story author">
+                        {{user.firstName}} {{user.lastName}}
+                    </div>
+                </div>
+
+                <div class="card-action center-align">
+                    <a href="/stories/{{_id}}" class="btn grey"> Read more</a>
+                </div>
+
+            </div>
+        </div>
+    {{else}}
+        <p>No public stories to show</p>
+    {{/each}}
+</div>

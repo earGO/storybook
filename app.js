@@ -18,7 +18,11 @@ const express = require('express'),
     exphbs  = require('express-handlebars'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    methodOverride = require('method-override'),
+
+    //helpers
+    {truncate,stripTags,formatDate,select} = require('./helpers/hbs');
 
 /*====================== Load environment variables ========================*/
     require('custom-env').env('staging')
@@ -33,14 +37,28 @@ mongoose.connect(mongoDB,{ useNewUrlParser:true })
     .then(()=> console.log('MongoDB connected!'))
     .catch(err => console.log('error connecting to MongoDB\n',err));
 
+//load models
+require('./models/User');
+require('./models/Story');
+
 /*====================== Activate middleware ========================*/
 app.use(express.static('public'));
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({
+    helpers:{
+        truncate: truncate,
+        stripTags: stripTags,
+        formatDate: formatDate,
+        select: select
+    },
+    defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-app.use(flash());
+app.use(methodOverride('_method'));
+
+app.use(flash()); //initialize flash messaging
 app.use(cookieParser()); //initialize cookie parser JIC
 
 //initialize express-session
@@ -51,8 +69,6 @@ app.use(session({
 }));
 
 /*====================== Passport config ========================*/
-//load all models for passport
-require('./models/User');
 
 //initialize passport
 app.use(passport.initialize())
@@ -66,7 +82,6 @@ app.use((req,res,next)=>{
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
     res.locals.user = req.user || null;
-    console.log('i see global user as',res.locals.user)
     next();
 })
 

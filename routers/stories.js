@@ -1,11 +1,12 @@
 const express = require('express'),
     router = express.Router(),
     {ensureAuthenticated,ensureGuest} = require('../controllers/auth'),
-    addStory = require('../controllers/addStory');
+    addStory = require('../controllers/addStory'),
+    showStory = require('../controllers/showStory'),
+    editStory = require('../controllers/editStory');
 
-router.get('/', (req, res) => {
-    res.render('stories/index')
-})
+
+router.get('/', showStory.showPublic)
 
 router.get('/add',ensureAuthenticated, (req, res) => {
     res.render('stories/add')
@@ -13,12 +14,12 @@ router.get('/add',ensureAuthenticated, (req, res) => {
 
 router.post('/',addStory.post)
 
-router.get('/edit',ensureAuthenticated, (req, res) => {
-    res.render('stories/edit')
-})
+router.get('/:id/edit',ensureAuthenticated,editStory.edit)
+router.put('/:id',ensureAuthenticated,editStory.saveEdited)
+router.delete('/:id',ensureAuthenticated,editStory.deleteStory)
 
-router.get('/:id',ensureAuthenticated, (req, res) => {
-    res.render('stories/show')
-})
+//show single story
+
+router.get('/:id', showStory.showOne)
 
 module.exports = router;
