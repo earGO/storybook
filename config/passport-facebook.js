@@ -19,10 +19,8 @@ module.exports = function(passport) {
 
             if (profile.name.givenName){
                 givenName=profile.name.givenName
-                console.log('using facebook profile given name')
             } else {
                 givenName = profile.displayName.split(' ')[0];
-                console.log('using splitted display name')
             }
             (profile.name.familyName)
                 ?familyName=profile.name.familyName
@@ -39,7 +37,6 @@ module.exports = function(passport) {
                 email:facebookEmail,
                 image:profile._json.picture.data.url
             }
-            console.log('created newUser from request\n',newUser)
             //check for existing user, and if not - create one
             User.findOne({
                 facebookID: newUser.facebookID

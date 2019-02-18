@@ -3,7 +3,8 @@ const express = require('express'),
     {ensureAuthenticated,ensureGuest} = require('../controllers/auth'),
     addStory = require('../controllers/addStory'),
     showStory = require('../controllers/showStory'),
-    editStory = require('../controllers/editStory');
+    editStory = require('../controllers/editStory'),
+    comments = require('../controllers/comments');
 
 
 router.get('/', showStory.showPublic)
@@ -19,7 +20,10 @@ router.put('/:id',ensureAuthenticated,editStory.saveEdited)
 router.delete('/:id',ensureAuthenticated,editStory.deleteStory)
 
 //show single story
-
 router.get('/:id', showStory.showOne)
+
+//comments routers
+router.post('/comments/:id',comments.postComment)
+
 
 module.exports = router;

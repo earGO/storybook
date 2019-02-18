@@ -11,7 +11,6 @@ const
         Story.findOne({_id:req.params.id})
             .populate('user')
             .then(story =>{
-                console.log(story)
                 res.render('stories/edit',{story:story})
             })
 },
